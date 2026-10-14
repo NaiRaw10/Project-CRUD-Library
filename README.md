@@ -6,7 +6,7 @@ Project aplikasi web full-stack untuk manajemen data perpustakaan/koleksi yang d
 
 * **Backend:** Express.js, TypeScript, Node.js, MySQL (`mysql2`)
 * **Frontend:** Next.js (App Router), Tailwind CSS
-* **Tools & Workflow:** Git, GitHub, Postman, Conventional Commits
+* **Tools & Workflow:** Git, GitHub, Postman
 
 ## Project Structure
 
