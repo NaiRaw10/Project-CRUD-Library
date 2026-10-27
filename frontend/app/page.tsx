@@ -24,7 +24,6 @@ export default function Page() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  // Ambil data buku dari API backend Express
   useEffect(() => {
     async function fetchBooks() {
       try {
@@ -35,7 +34,7 @@ export default function Page() {
         }
 
         const data = await response.json();
-        // Mengambil array dari properti "data" sesuai respons backend kamu
+
         setBooks(Array.isArray(data) ? data : data.data || []);
       } catch (err: any) {
         setError(err.message || "Terjadi kesalahan koneksi");
@@ -60,7 +59,6 @@ export default function Page() {
       />
 
       <main className="flex-1 bg-white px-8 py-8 mt-5 flex flex-col gap-10 shadow-inner">
-        {/* Banner Utama */}
         <div className="w-full h-64 bg-[#EBF3FC] rounded-3xl shadow-sm border border-blue-50 flex items-center justify-center relative overflow-hidden">
           <img
             src="/thumbnail.jpeg"
@@ -83,10 +81,7 @@ export default function Page() {
 
         {!loading && !error && (
           <>
-            {/* Panggil ListBooks untuk Rekomendasi Pertama */}
             <ListBooks title="Rekomendasi" books={filteredBooks} />
-
-            {/* Panggil ListBooks untuk Rekomendasi Kedua */}
             <ListBooks title="Rekomendasi Lainnya" books={filteredBooks} />
           </>
         )}

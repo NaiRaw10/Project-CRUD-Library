@@ -29,15 +29,12 @@ export default function Login({
     <div className="min-h-screen bg-white flex items-center justify-center p-5">
       <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
 
-        {/* Card Form Login */}
         <div className="w-full max-w-[440px] md:w-[440px] bg-[#E5F1FA] rounded-[32px] px-8 sm:px-10 py-10 flex flex-col items-center">
 
-          {/* Judul */}
           <h1 className="text-2xl font-bold text-black mb-8 tracking-wide">
             Masuk Akun
           </h1>
 
-          {/* Pesan Error */}
           {error && (
             <div className="w-full bg-red-100 text-red-600 text-sm p-3 rounded-xl mb-4 text-center">
               {error}
@@ -48,7 +45,7 @@ export default function Login({
             onSubmit={onSubmit}
             className="w-full flex flex-col gap-3"
           >
-            {/* Email */}
+
             <input
               type="email"
               placeholder="Email"
@@ -58,7 +55,6 @@ export default function Login({
               className="w-full h-12 px-4 bg-white border border-blue-300 rounded-xl text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
 
-            {/* Password */}
             <div className="relative w-full">
               <input
                 type={showPassword ? "text" : "password"}
@@ -115,7 +111,6 @@ export default function Login({
               </button>
             </div>
 
-            {/* Link Daftar (Belum Punya Akun?) */}
             <div className="text-right text-xs text-gray-600 mt-1 mb-6">
               Belum Punya Akun?{" "}
               <Link
@@ -126,7 +121,6 @@ export default function Login({
               </Link>
             </div>
 
-            {/* Tombol Masuk */}
             <button
               type="submit"
               disabled={loading}
@@ -138,7 +132,6 @@ export default function Login({
           </form>
         </div>
 
-        {/* Gambar Kucing Kutu Buku */}
         <div className="relative w-72 h-72 sm:w-72 sm:h-72 md:w-80 md:h-80 flex-shrink-0">
           <Image
             src="/kutubukucuking2.png"

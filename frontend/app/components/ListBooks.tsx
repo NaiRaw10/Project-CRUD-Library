@@ -29,7 +29,7 @@ export default function ListBooks({ title, books }: ListBooksProps) {
               key={book.id || index} 
               className="w-48 flex-shrink-0 bg-[#EBF3FC]/60 border border-blue-100/60 rounded-2xl p-4 flex flex-col gap-3 shadow-sm hover:shadow-md transition-all"
             >
-              {/* Cover Buku */}
+
               <div className="w-full h-60 relative rounded-xl overflow-hidden bg-white shadow-sm">
                 <Image
                   src={book.cover_url || "https://image.gramedia.net/rs:fit:0:0:f:webp/plain/https://cdn.gramedia.net/uploads/picture_meta/2023/10/25/qnyuvkkqd8n6wfhwldgi9.jpg"}
@@ -40,7 +40,6 @@ export default function ListBooks({ title, books }: ListBooksProps) {
                 />
               </div>
 
-              {/* Info Buku */}
               <div className="flex flex-col gap-1">
                 <h3 className="text-sm font-bold text-gray-800 truncate" title={book.title}>
                   {book.title}
@@ -55,7 +54,6 @@ export default function ListBooks({ title, books }: ListBooksProps) {
             </div>
           ))}
 
-          {/* Tombol Plus (+) untuk Geser */}
           <div className="w-16 flex-shrink-0 flex items-center justify-center">
             <button className="w-12 h-12 rounded-full bg-[#EBF3FC] border border-blue-100 flex items-center justify-center text-gray-600 hover:bg-blue-100 transition-all shadow-sm cursor-pointer">
               <Plus size={24} />

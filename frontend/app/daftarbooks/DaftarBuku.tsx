@@ -2,7 +2,6 @@ import { ArrowLeft, Plus, Trash2, Pencil } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-// Sesuaikan interface Book dengan struktur DB kamu
 interface Book {
   id?: number;
   title: string;
@@ -17,8 +16,8 @@ interface DaftarBukuProps {
   loading: boolean;
   error: string;
   onDelete: (id?: number) => void;
-  onOpenAddModal: () => void; // <-- Props baru
-  onOpenEditModal: (book: Book) => void; // <-- Props baru
+  onOpenAddModal: () => void; 
+  onOpenEditModal: (book: Book) => void; 
 }
 
 export default function DaftarBuku({ 
@@ -26,8 +25,8 @@ export default function DaftarBuku({
   loading, 
   error, 
   onDelete, 
-  onOpenAddModal, // <-- Destructure props baru
-  onOpenEditModal // <-- Destructure props baru
+  onOpenAddModal, 
+  onOpenEditModal 
 }: DaftarBukuProps) {
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -45,10 +44,9 @@ export default function DaftarBuku({
 
       <main className="flex-1 px-10 py-8 flex flex-col gap-8 max-w-8xl mx-auto w-full">
         
-        {/* Tombol Plus Kecil di Bagian Atas Kiri (Panggil fungsi modal) */}
         <div className="w-fit">
           <button
-            onClick={onOpenAddModal} // <-- Panggil fungsi modal tambah
+            onClick={onOpenAddModal}
             className="w-12 h-12 rounded-xl bg-[#C4D664] flex items-center justify-center text-gray-900 shadow-md hover:opacity-90 transition-all cursor-pointer active:scale-95"
           >
             <Plus size={24} strokeWidth={2.5} />
@@ -80,7 +78,6 @@ export default function DaftarBuku({
                     {book.title}
                   </h3>
 
-                  {/* Tombol Aksi di Bawah Kanan (Tombol edit panggil fungsi modal edit) */}
                   <div className="flex items-center justify-end gap-3 self-end">
                     <button
                       onClick={() => onDelete(book.id)}
@@ -90,7 +87,7 @@ export default function DaftarBuku({
                       <Trash2 size={18} />
                     </button>
                     <button
-                      onClick={() => onOpenEditModal(book)} // <-- Panggil fungsi modal edit dengan data buku
+                      onClick={() => onOpenEditModal(book)}
                       className="w-10 h-10 rounded-full bg-[#C4D664] flex items-center justify-center text-gray-900 shadow-sm hover:opacity-90 transition-all cursor-pointer"
                       title="Edit Buku"
                     >

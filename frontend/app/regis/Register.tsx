@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -61,15 +60,12 @@ export default function Register() {
     <div className="min-h-screen bg-white flex items-center justify-center p-5">
       <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
 
-        {/* Card Form Registrasi */}
         <div className="w-full max-w-[440px] md:w-[440px] bg-[#E5F1FA] rounded-[32px] px-8 sm:px-10 py-10 flex flex-col items-center">
 
-          {/* Judul */}
           <h1 className="text-2xl font-bold text-black mb-8 tracking-wide">
             Daftar Akun
           </h1>
 
-          {/* Pesan Error */}
           {error && (
             <div className="w-full bg-red-100 text-red-600 text-sm p-3 rounded-xl mb-4 text-center">
               {error}
@@ -80,7 +76,7 @@ export default function Register() {
             onSubmit={handleSubmit}
             className="w-full flex flex-col gap-3"
           >
-            {/* Username */}
+
             <input
               type="text"
               placeholder="Username"
@@ -92,7 +88,6 @@ export default function Register() {
               className="w-full h-12 px-4 bg-white border border-blue-300 rounded-xl text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
 
-            {/* Email */}
             <input
               type="email"
               placeholder="Email"
@@ -104,7 +99,6 @@ export default function Register() {
               className="w-full h-12 px-4 bg-white border border-blue-300 rounded-xl text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
 
-            {/* Password */}
             <div className="relative w-full">
               <input
                 type={showPassword ? "text" : "password"}
@@ -165,7 +159,6 @@ export default function Register() {
               </button>
             </div>
 
-            {/* Link Login */}
             <div className="text-right text-xs text-gray-600 mt-1 mb-6">
               Sudah Punya Akun?{" "}
               <a
@@ -176,7 +169,6 @@ export default function Register() {
               </a>
             </div>
 
-            {/* Tombol Daftar */}
             <button
               type="submit"
               disabled={loading}
@@ -188,7 +180,6 @@ export default function Register() {
           </form>
         </div>
 
-        {/* Gambar Kucing Kutu Buku */}
         <div className="relative w-72 h-72 sm:w-72 sm:h-72 md:w-80 md:h-80 flex-shrink-0">
           <Image
             src="/kutubukucuking.png"

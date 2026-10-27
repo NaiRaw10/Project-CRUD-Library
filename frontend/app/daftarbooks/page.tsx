@@ -18,7 +18,7 @@ export default function Page() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -54,14 +54,15 @@ export default function Page() {
     setEditingBook(null);
   };
 
-  // --- FUNGSI SIMPAN DENGAN KIRIM TOKEN JWT ---
   const handleSaveBook = async (bookData: Book) => {
     setIsSaving(true);
     try {
       // Ambil token yang tersimpan saat login
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("Sesi habis atau token tidak ditemukan. Silakan login ulang sebagai admin.");
+        alert(
+          "Sesi habis atau token tidak ditemukan. Silakan login ulang sebagai admin.",
+        );
         return;
       }
 
@@ -74,9 +75,9 @@ export default function Page() {
         method: isEditing ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}` // <-- Sertakan token di sini
+          Authorization: `Bearer ${token}`, // <-- Sertakan token di sini
         },
-        body: JSON.stringify(bookData)
+        body: JSON.stringify(bookData),
       });
 
       const result = await response.json();
@@ -84,19 +85,24 @@ export default function Page() {
       if (!response.ok) {
         throw new Error(result.message || "Gagal menyimpan buku");
       }
-      
+
       // Ambil data buku terbaru dari respons backend
       const updatedOrNewBook = result.data || bookData;
 
       if (isEditing) {
-        setBooks(books.map((b) => (b.id === updatedOrNewBook.id ? updatedOrNewBook : b)));
+        setBooks(
+          books.map((b) =>
+            b.id === updatedOrNewBook.id ? updatedOrNewBook : b,
+          ),
+        );
       } else {
         setBooks([updatedOrNewBook, ...books]);
       }
 
-      alert(isEditing ? "Buku berhasil diupdate!" : "Buku berhasil ditambahkan!");
+      alert(
+        isEditing ? "Buku berhasil diupdate!" : "Buku berhasil ditambahkan!",
+      );
       closeModal();
-
     } catch (err: any) {
       alert(err.message);
     } finally {
@@ -104,7 +110,6 @@ export default function Page() {
     }
   };
 
-  // --- FUNGSI HAPUS DENGAN KIRIM TOKEN JWT ---
   const handleDelete = (id?: number) => {
     if (!id) return;
     if (confirm("Apakah kamu yakin ingin menghapus buku ini?")) {
@@ -114,11 +119,11 @@ export default function Page() {
         return;
       }
 
-      fetch(`http://localhost:5000/api/books/${id}`, { 
-        method: 'DELETE',
+      fetch(`http://localhost:5000/api/books/${id}`, {
+        method: "DELETE",
         headers: {
-          "Authorization": `Bearer ${token}` // <-- Sertakan token di sini juga
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
         .then(async (res) => {
           if (res.ok) {
@@ -148,7 +153,9 @@ export default function Page() {
         isOpen={isModalOpen}
         onClose={closeModal}
         bookToEdit={editingBook}
-        onSave={handleSaveBook}
+        onSave={(bookData) => {
+          handleSaveBook({ ...bookData, cover_url: bookData.cover_url ?? "" });
+        }}
         isSaving={isSaving}
       />
     </>

@@ -96,7 +96,7 @@ export default function BookFormModal({
         ref={modalRef}
         className="bg-white w-full max-w-3xl rounded-3xl p-8 flex flex-col gap-6 shadow-2xl max-h-[90vh] overflow-y-auto"
       >
-        {/* Header Modal */}
+
         <div className="flex items-center justify-between pb-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
             <BookPlus size={26} className="text-[#C4D664]" />
@@ -113,7 +113,6 @@ export default function BookFormModal({
           </button>
         </div>
 
-        {/* Form Input */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="flex flex-col gap-2">
@@ -206,7 +205,6 @@ export default function BookFormModal({
             </div>
           </div>
 
-          {/* Tombol Aksi */}
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
             <button
               type="button"
