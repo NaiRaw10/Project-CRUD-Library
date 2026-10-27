@@ -17,8 +17,8 @@ interface DaftarBukuProps {
   loading: boolean;
   error: string;
   onDelete: (id?: number) => void;
-  onOpenAddModal: () => void; // <-- Props baru
-  onOpenEditModal: (book: Book) => void; // <-- Props baru
+  onOpenAddModal: () => void;
+  onOpenEditModal: (book: Book) => void; 
 }
 
 export default function DaftarBuku({ 
