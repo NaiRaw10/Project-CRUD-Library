@@ -5,9 +5,10 @@ interface Book {
   id?: number;
   title: string;
   author?: string;
-  page?: string | number; // <-- Tambahan field page
+  page?: string | number;
   category: string;
-  cover_url: string;
+  cover_url?: string; // Bisa berupa string (jika dari database)
+  coverFile?: File | null; // <-- Tambahan untuk menampung file gambar dari device
   description?: string;
 }
 
@@ -24,16 +25,16 @@ export default function BookFormModal({
   onClose,
   bookToEdit,
   onSave,
-  isSaving
+  isSaving,
 }: BookFormModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const isEditing = !!bookToEdit;
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [page, setPage] = useState(""); // <-- State untuk halaman
+  const [page, setPage] = useState("");
   const [category, setCategory] = useState("");
-  const [coverUrl, setCoverUrl] = useState("");
+  const [coverFile, setCoverFile] = useState<File | null>(null); // <-- Menggantikan text URL dengan File
   const [description, setDescription] = useState("");
 
   useEffect(() => {
@@ -42,21 +43,24 @@ export default function BookFormModal({
       setAuthor(bookToEdit.author || "");
       setPage(bookToEdit.page ? String(bookToEdit.page) : "");
       setCategory(bookToEdit.category || "");
-      setCoverUrl(bookToEdit.cover_url || "");
+      setCoverFile(null);
       setDescription(bookToEdit.description || "");
     } else {
       setTitle("");
       setAuthor("");
       setPage("");
       setCategory("");
-      setCoverUrl("");
+      setCoverFile(null);
       setDescription("");
     }
   }, [bookToEdit, isOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };
@@ -74,10 +78,11 @@ export default function BookFormModal({
       id: bookToEdit?.id,
       title,
       author,
-      page, // <-- Kirim data page
+      page,
       category,
-      cover_url: coverUrl,
-      description
+      cover_url: bookToEdit?.cover_url, // Pertahankan URL lama jika sedang edit dan tidak ganti gambar
+      coverFile, // <-- Kirim file gambar pilihan device ke fungsi onSave
+      description,
     };
     onSave(bookData);
   };
@@ -111,7 +116,9 @@ export default function BookFormModal({
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-semibold text-gray-600">Judul Buku *</label>
+              <label className="text-sm font-semibold text-gray-600">
+                Judul Buku *
+              </label>
               <input
                 type="text"
                 value={title}
@@ -123,7 +130,9 @@ export default function BookFormModal({
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-semibold text-gray-600">Penulis</label>
+              <label className="text-sm font-semibold text-gray-600">
+                Penulis
+              </label>
               <input
                 type="text"
                 value={author}
@@ -133,9 +142,10 @@ export default function BookFormModal({
               />
             </div>
 
-            {/* Input Jumlah Halaman */}
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-semibold text-gray-600">Jumlah Halaman (Page)</label>
+              <label className="text-sm font-semibold text-gray-600">
+                Jumlah Halaman (Page)
+              </label>
               <input
                 type="text"
                 value={page}
@@ -146,7 +156,9 @@ export default function BookFormModal({
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-semibold text-gray-600">Kategori *</label>
+              <label className="text-sm font-semibold text-gray-600">
+                Kategori *
+              </label>
               <input
                 type="text"
                 value={category}
@@ -157,20 +169,32 @@ export default function BookFormModal({
               />
             </div>
 
+            {/* Input Pilih File Cover dari Device */}
             <div className="flex flex-col gap-2 md:col-span-2">
-              <label className="text-sm font-semibold text-gray-600">URL Gambar Cover *</label>
+              <label className="text-sm font-semibold text-gray-600">
+                Cover Buku (File Gambar) *
+              </label>
               <input
-                type="url"
-                value={coverUrl}
-                onChange={(e) => setCoverUrl(e.target.value)}
-                required
-                placeholder="https://example.com/image.jpg"
-                className="w-full px-4 py-2.5 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm text-gray-800 placeholder-gray-400"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setCoverFile(e.target.files[0]);
+                  }
+                }}
+                className="w-full px-4 py-2.5 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm text-gray-800 bg-white file:mr-4 file:py-1 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
               />
+              {isEditing && !coverFile && (
+                <span className="text-xs text-gray-400">
+                  *Biarkan kosong jika tidak ingin mengubah cover buku.
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col gap-2 md:col-span-2">
-              <label className="text-sm font-semibold text-gray-600">Deskripsi Singkat</label>
+              <label className="text-sm font-semibold text-gray-600">
+                Deskripsi Singkat
+              </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -198,7 +222,11 @@ export default function BookFormModal({
               style={{ backgroundColor: "#C4D664" }}
             >
               <Save size={16} />
-              {isSaving ? "Menyimpan..." : isEditing ? "Simpan Perubahan" : "Tambah Buku"}
+              {isSaving
+                ? "Menyimpan..."
+                : isEditing
+                  ? "Simpan Perubahan"
+                  : "Tambah Buku"}
             </button>
           </div>
         </form>
