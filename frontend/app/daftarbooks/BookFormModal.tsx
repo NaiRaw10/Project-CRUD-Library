@@ -7,9 +7,9 @@ interface Book {
   author?: string;
   page?: string | number;
   category: string;
-  cover_url?: string; // Bisa berupa string (jika dari database)
-  coverFile?: File | null; // <-- Tambahan untuk menampung file gambar dari device
-  description?: string;
+  cover_url?: string | null;
+  coverFile?: File | null;
+  description: string;
 }
 
 interface BookFormModalProps {

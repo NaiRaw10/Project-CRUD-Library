@@ -12,3 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/books', booksRoutes);
 app.use('/api', authRoutes);
 
+app.listen(5000, () => {
+  console.log("Server berjalan di http://localhost:5000");
+});

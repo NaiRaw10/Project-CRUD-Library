@@ -1,21 +1,21 @@
 import { Request, Response } from "express";
 import db from "../config/db";
+import cloudinary from '../config/cloudinary';
 
-// 1. Ambil Semua Buku (Sudah mendukung Search & Filter Kategori Novel/Komik)
 export async function getAllBooks(req: Request, res: Response) {
   try {
     const { keyword, category } = req.query;
 
-    let query = "SELECT * FROM books WHERE 1=1";
+    let query = "select * from books where 1=1";
     let params: any[] = [];
 
     if (keyword) {
-      query += " AND title LIKE ?";
+      query += " and title like ?";
       params.push(`%${keyword}%`);
     }
 
     if (category && category !== "Semua") {
-      query += " AND category = ?";
+      query += " and category = ?";
       params.push(category);
     }
 
@@ -33,12 +33,13 @@ export async function getAllBooks(req: Request, res: Response) {
   }
 }
 
-// 2. Ambil Detail Buku Berdasarkan ID (Untuk Halaman Detail)
 export async function getBookById(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    
-    const [rows]: any = await db.query("SELECT * FROM books WHERE id = ?", [id]);
+
+    const [rows]: any = await db.query("select * from books where id = ?", [
+      id,
+    ]);
 
     if (rows.length === 0) {
       return res.status(404).json({
@@ -58,21 +59,31 @@ export async function getBookById(req: Request, res: Response) {
   }
 }
 
-// 3. Tambah Buku Baru (Sudah ada description & kategori Novel/Komik)
 export async function createBook(req: Request, res: Response) {
   try {
-    const {
-      title,
-      author,
-      page,
-      category,
-      cover_url,
-      description, // <-- Kolom baru ditambahkan di sini
-    } = req.body;
+    const { title, author, page, category, cover_url, description } = req.body;
+
+    let imageUrl = null;
+    
+        if (req.file) {
+          const uploadResult: any = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+              { folder: 'cover_books' },
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+              }
+            );
+    
+            stream.end(req.file?.buffer);
+          });
+    
+          imageUrl = uploadResult.secure_url;
+        }
 
     const [result]: any = await db.query(
-      "INSERT INTO books (title, author, page, category, cover_url, description) VALUES (?, ?, ?, ?, ?, ?)",
-      [title, author, page, category, cover_url, description]
+      "insert into books (title, author, page, category, cover_url, description) values (?, ?, ?, ?, ?, ?)",
+      [title, author, page, category, cover_url, description],
     );
 
     return res.status(201).json({
@@ -87,22 +98,14 @@ export async function createBook(req: Request, res: Response) {
   }
 }
 
-// 4. Update Buku (Ditambahkan description)
 export async function updateBook(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const {
-      title,
-      author,
-      page,
-      category,
-      cover_url,
-      description, // <-- Ditambahkan di update juga
-    } = req.body;
+    const { title, author, page, category, cover_url, description } = req.body;
 
     const [result]: any = await db.query(
-      "UPDATE books SET title = ?, author = ?, page = ?, category = ?, cover_url = ?, description = ? WHERE id = ?",
-      [title, author, page, category, cover_url, description, id]
+      "update books set title = ?, author = ?, page = ?, category = ?, cover_url = ?, description = ? WHERE id = ?",
+      [title, author, page, category, cover_url, description, id],
     );
 
     if (result.affectedRows === 0) {
@@ -122,12 +125,11 @@ export async function updateBook(req: Request, res: Response) {
   }
 }
 
-// 5. Hapus Buku (Tetap sama)
 export async function deleteBook(req: Request, res: Response) {
   try {
     const { id } = req.params;
 
-    const [result]: any = await db.query("DELETE FROM books WHERE id = ?", [
+    const [result]: any = await db.query("delete from books where id = ?", [
       id,
     ]);
 

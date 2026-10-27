@@ -4,7 +4,7 @@ import db from '../config/db';
 import cloudinary from '../config/cloudinary';
 
 export async function register(req: any, res: Response) {
-  try {
+  try { 
     const { username, email, password } = req.body;
     let imageUrl = null;
 
@@ -25,7 +25,7 @@ export async function register(req: any, res: Response) {
     }
 
     const query =
-      'INSERT INTO users (username, email, password, image) VALUES (?, ?, ?, ?)';
+      'insert into users (username, email, password, image) values (?, ?, ?, ?)';
 
     await db.execute(query, [username, email, password, imageUrl]);
 
@@ -50,7 +50,7 @@ export async function login(req: Request, res: Response) {
     }
 
     const [users]: [any[], any] = await db.execute(
-      'SELECT * FROM users WHERE email = ?',
+      'select * from users where email = ?',
       [req.body.email]
     );
 
@@ -83,7 +83,7 @@ export async function login(req: Request, res: Response) {
 
 export async function getAllUsers(req: Request, res: Response) {
   try {
-    const [users] = await db.execute('SELECT * FROM users');
+    const [users] = await db.execute('select * from users');
 
     return res.status(200).json({
       message: 'user masuk!',
@@ -102,7 +102,7 @@ export async function deleteUsers(req: Request, res: Response) {
     const { id } = req.params;
 
     const [result]: any = await db.query(
-      'DELETE FROM users WHERE id = ?',
+      'delete from users where id = ?',
       [id]
     );
 
