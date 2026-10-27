@@ -1,14 +1,18 @@
 # --- Dependencies ---
 node_modules/
+**/node_modules/
 jspm_packages/
 
 # --- Environment & Secret Files ---
 .env
 .env.local
 .env.*.local
+**/env.local
+**/ .env
 
 # --- Build & Next.js Output ---
 .next/
+**/ .next/
 out/
 build/
 dist/
